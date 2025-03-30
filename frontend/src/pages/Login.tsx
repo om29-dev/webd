@@ -1,8 +1,8 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css'
+import '../App.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,30 +11,50 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccessMessage('');
 
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
+    if (isForgotPassword) {
+      if (!email) {
+        setError('Please enter your email');
+        return;
+      }
 
-    setLoading(true);
+      setLoading(true);
+      try {
+        // Simulate OTP API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setSuccessMessage('OTP has been sent to your email!');
+        setTimeout(() => {
+          navigate('/reset-password', { state: { email } });
+        }, 2000);
+      } catch (err) {
+        setError('Failed to send OTP. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      if (!email || !password) {
+        setError('Please fill in all fields');
+        return;
+      }
 
-    // Simulate API call
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSuccessMessage('Login successful!');
-      // Reset form
-      setEmail('');
-      setPassword('');
-    } catch (err) {
-      setError('Failed to login. Please check your credentials.');
-    } finally {
-      setLoading(false);
+      setLoading(true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setSuccessMessage('Login successful!');
+        setEmail('');
+        setPassword('');
+      } catch (err) {
+        setError('Failed to login. Please check your credentials.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -43,7 +63,9 @@ const Login: React.FC = () => {
       <Row className="justify-content-center align-items-center min-vh-100">
         <Col xs={12} sm={8} md={6} lg={4}>
           <div className="login-form p-4 shadow">
-            <h2 className="text-center mb-4">Sign In</h2>
+            <h2 className="text-center mb-4">
+              {isForgotPassword ? 'Reset Password' : 'Sign In'}
+            </h2>
 
             {error && <Alert variant="danger" dismissible onClose={() => setError('')}>{error}</Alert>}
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
@@ -60,25 +82,29 @@ const Login: React.FC = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formPassword" className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </Form.Group>
+              {!isForgotPassword && (
+                <>
+                  <Form.Group controlId="formPassword" className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
 
-              <Form.Group controlId="formRememberMe" className="mb-3">
-                <Form.Check
-                  type="checkbox"
-                  label="Remember me"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-              </Form.Group>
+                  <Form.Group controlId="formRememberMe" className="mb-3">
+                    <Form.Check
+                      type="checkbox"
+                      label="Remember me"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                  </Form.Group>
+                </>
+              )}
 
               <Button
                 variant="primary"
@@ -91,18 +117,30 @@ const Login: React.FC = () => {
                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span className="visually-hidden">Loading...</span>
                   </>
+                ) : isForgotPassword ? (
+                  'Send OTP'
                 ) : (
                   'Sign In'
                 )}
               </Button>
 
               <div className="text-center mb-3">
-                <a href="#forgot-password" className="text-decoration-none">Forgot password?</a>
+                {isForgotPassword ? (
+                  <Button variant="link" onClick={() => setIsForgotPassword(false)}>
+                    Back to Login
+                  </Button>
+                ) : (
+                  <Button variant="link" onClick={() => setIsForgotPassword(true)}>
+                    Forgot password?
+                  </Button>
+                )}
               </div>
 
-              <div className="text-center">
-                <p className="mb-0">Don't have an account? <Link to='/signup'>Sign up</Link></p>
-              </div>
+              {!isForgotPassword && (
+                <div className="text-center">
+                  <p className="mb-0">Don't have an account? <Link to='/signup'>Sign up</Link></p>
+                </div>
+              )}
             </Form>
           </div>
         </Col>

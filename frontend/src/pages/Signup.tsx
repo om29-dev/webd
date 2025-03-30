@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
-const SignupPage: React.FC = () => {
+const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -161,4 +161,4 @@ const SignupPage: React.FC = () => {
   );
 };
 
-export default SignupPage;
+export default Signup;
