@@ -1,22 +1,39 @@
+import { Link } from 'react-router';
+import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../assets/css/Header.css'
-import { Navbar, Container, Button, Nav } from 'react-bootstrap';
-
-function Header() {
+const Header = () => {
   return (
-    <>
-      <Navbar className="bg-body-secondary">
-        <Container>
-          <Navbar.Brand href='/' className='justify-content-start'>Journey</Navbar.Brand>
-          <Nav className='justify-content-end'>
-              <Button variant='primary'>Login</Button>
-              <Button variant='outline-primary'>Sign Up</Button>
+    <Navbar bg="white" expand="lg" className="border-bottom">
+      <Container>
+        <Link to='/' className="text-decoration-none"> {/* Add class here */}
+          <Navbar.Brand className="fw-bold text-primary">
+            MyAwesomeApp
+          </Navbar.Brand>
+        </Link>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto align-items-center">
+            <Link to='/login'>
+              <Button
+                variant="outline-primary"
+                className="me-2 rounded-pill px-4"
+              >
+                Login
+              </Button>
+            </Link>
+            <Link to='/signup'>
+              <Button
+                variant="outline-primary"
+                className="rounded-pill px-4"
+              >
+                Sign Up
+              </Button>
+            </Link>
           </Nav>
-        </Container>
-      </Navbar>
-    </>
-  )
-}
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
 
 export default Header;
