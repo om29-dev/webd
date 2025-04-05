@@ -12,6 +12,8 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.use(express.static(path.join(__dirname, 'public')))
+
 const PORT = 3000
 app.listen(PORT, () => {
     console.log(`Server listening on PORT ${PORT}`)
