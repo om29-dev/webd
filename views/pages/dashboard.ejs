@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeTrack - Start Your Coding Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #334155;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --light: #f1f5f9;
+            --dark: #0f172a;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --sidebar-width: 80px;
+            --sidebar-expanded: 250px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fira Code', 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 1)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="20" font-family="monospace" font-size="12" fill="rgba(99,102,241,0.05)">function() {</text><text x="15" y="35" font-family="monospace" font-size="12" fill="rgba(99,102,241,0.05)">return success;</text><text x="10" y="50" font-family="monospace" font-size="12" fill="rgba(99,102,241,0.05)">}</text></svg>');
+        }
+
+        /* Animated background elements */
+        .floating-code {
+            position: fixed;
+            opacity: 0.1;
+            font-size: 0.8rem;
+            color: var(--accent);
+            z-index: -1;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        /* Header styles */
+        header {
+            background-color: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.1);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--primary);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 0;
+            width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .user-profile:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(99, 102, 241, 0.2);
+            color: var(--accent);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: rgba(99, 102, 241, 0.2);
+            margin: 0.25rem 0;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            transition: width var(--transition-speed);
+            overflow: hidden;
+            z-index: 90;
+            padding-top: 80px;
+            border-right: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .sidebar:hover {
+            width: var(--sidebar-expanded);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.25rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--accent);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .sidebar-item.active {
+            background-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .sidebar-item.active::before {
+            transform: translateX(0);
+        }
+
+        .sidebar-icon {
+            color: var(--light);
+            font-size: 1.25rem;
+            min-width: 40px;
+            display: flex;
+            justify-content: center;
+            opacity: 0.8;
+        }
+
+        .sidebar-item.active .sidebar-icon,
+        .sidebar-item:hover .sidebar-icon {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .sidebar-text {
+            color: var(--light);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+        }
+
+        .sidebar:hover .sidebar-text {
+            opacity: 1;
+        }
+
+        /* Main content */
+        main {
+            margin-left: var(--sidebar-width);
+            margin-top: 80px;
+            padding: 2rem;
+            width: calc(100% - var(--sidebar-width));
+            transition: margin-left var(--transition-speed);
+        }
+
+        .sidebar:hover ~ main {
+            margin-left: var(--sidebar-expanded);
+            width: calc(100% - var(--sidebar-expanded));
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--light), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dashboard-subtitle {
+            color: var(--light);
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        .action-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-button:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Stats cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--success));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--light);
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Charts section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Radar chart container */
+        .radar-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .radar-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .radar-center-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .radar-center-label {
+            font-size: 0.8rem;
+            color: var(--light);
+            opacity: 0.8;
+        }
+
+        /* Practice section */
+        .practice-container {
+            background-color: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .practice-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .problem-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .problem-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .problem-difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-difficulty.easy {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .problem-difficulty.medium {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .problem-difficulty.hard {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .problem-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .problem-description {
+            font-size: 0.9rem;
+            color: var(--light);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .problem-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .problem-solved {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.8rem;
+            color: var(--success);
+        }
+
+        .problem-points {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Compiler modal */
+        .compiler-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .compiler-content {
+            background-color: #0f172a;
+            margin: 2rem auto;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .compiler-header {
+            padding: 1rem 1.5rem;
+            background-color: rgba(30, 41, 59, 0.8);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compiler-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .close-compiler {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .close-compiler:hover {
+            opacity: 1;
+        }
+
+        .compiler-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 600px;
+        }
+
+        @media (max-width: 992px) {
+            .compiler-body {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .code-editor {
+            background-color: #0f172a;
+            border-right: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-toolbar {
+            padding: 0.75rem 1rem;
+            background-color: rgba(30, 41, 59, 0.8);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-selector {
+            background-color: rgba(15, 23, 42, 0.8);
+            color: white;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .editor-btn {
+            background-color: rgba(99, 102, 241, 0.2);
+            color: var(--light);
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .editor-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .editor-container {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        #code-editor {
+            width: 100%;
+            height: 100%;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            padding: 1rem;
+            border: none;
+            resize: none;
+            outline: none;
+            tab-size: 2;
+        }
+
+        .problem-info {
+            background-color: rgba(30, 41, 59, 0.8);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .problem-statement {
+            margin-bottom: 2rem;
+        }
+
+        .problem-statement h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .problem-statement p {
+            color: var(--light);
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .test-cases {
+            margin-bottom: 2rem;
+        }
+
+        .test-case {
+            background-color: rgba(15, 23, 42, 0.6);
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .test-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-case-title {
+            font-weight: 600;
+            color: white;
+        }
+
+        .test-case-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .test-case-status.pending {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .test-case-status.passed {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .test-case-status.failed {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .test-case-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .test-case-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .test-case-input,
+        .test-case-output {
+            background-color: rgba(15, 23, 42, 0.8);
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .test-case-input pre,
+        .test-case-output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .test-case-label {
+            font-size: 0.75rem;
+            color: var(--light);
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .compiler-footer {
+            padding: 1rem 1.5rem;
+            background-color: rgba(30, 41, 59, 0.8);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compiler-result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-icon {
+            font-size: 1.25rem;
+        }
+
+        .result-icon.success {
+            color: var(--success);
+        }
+
+        .result-icon.error {
+            color: var(--danger);
+        }
+
+        .result-text {
+            font-weight: 500;
+        }
+
+        .compiler-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .run-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .run-btn:hover {
+            background-color: var(--accent-dark);
+        }
+
+        .submit-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #0d9c6d;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+            }
+            
+            .sidebar:hover {
+                width: var(--sidebar-expanded);
+            }
+            
+            main {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .sidebar:hover ~ main {
+                margin-left: var(--sidebar-expanded);
+                width: calc(100% - var(--sidebar-expanded));
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* Floating code elements */
+        .floating-code-element {
+            position: absolute;
+            color: rgba(99, 102, 241, 0.1);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating code elements in background -->
+    <div class="floating-code-element" style="top: 10%; left: 5%;">function solve() {</div>
+    <div class="floating-code-element" style="top: 15%; left: 15%;">return result;</div>
+    <div class="floating-code-element" style="top: 20%; left: 25%;">}</div>
+    <div class="floating-code-element" style="top: 30%; left: 75%;">class Solution {</div>
+    <div class="floating-code-element" style="top: 35%; left: 65%;">public static void main()</div>
+    <div class="floating-code-element" style="top: 40%; left: 55%;">}</div>
+    <div class="floating-code-element" style="top: 60%; left: 20%;">def calculate():</div>
+    <div class="floating-code-element" style="top: 65%; left: 30%;">pass</div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="logo-text">CodeTrack</div>
+        </div>
+        
+        <div class="user-profile">
+            <div class="user-avatar">
+                <span>JD</span>
+            </div>
+            <div class="user-dropdown">
+                <a href="/profile" class="dropdown-item">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/login" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="sidebar">
+        <ul class="sidebar-nav">
+            <li class="sidebar-item active">
+                <div class="sidebar-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="sidebar-text">Dashboard</div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="sidebar-text" ><a href="/project" style="text-decoration: none; color: white;">Projects</a></div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="sidebar-text">Practice</div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="sidebar-text"><a href="/progress" style="text-decoration: none; color: white;">Progress</a></div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="sidebar-text">Achievements</div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="sidebar-text">Community</div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="sidebar-text"><a href="/resources" style="text-decoration: none; color: white;">Resources</a></div>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="sidebar-text">Settings</div>
+            </li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="dashboard-header fade-in">
+            <div>
+                <h1 class="dashboard-title">Your Coding Journey</h1>
+                <p class="dashboard-subtitle">Track your progress, solve problems, and level up your skills</p>
+            </div>
+            <button class="action-button fade-in delay-1" onclick="openCompiler()">
+                <i class="fas fa-play"></i> Practice Now
+            </button>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-card fade-in delay-1">
+                <div class="stat-title">Problems Solved</div>
+                <div class="stat-value">127</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i> 12% from last month
+                </div>
+            </div>
+            <div class="stat-card fade-in delay-2">
+                <div class="stat-title">Current Streak</div>
+                <div class="stat-value">18 days</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-fire"></i> Keep it up!
+                </div>
+            </div>
+            <div class="stat-card fade-in delay-3">
+                <div class="stat-title">Skill Level</div>
+                <div class="stat-value">Advanced</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-star"></i> Top 15%
+                </div>
+            </div>
+            <div class="stat-card fade-in delay-4">
+                <div class="stat-title">Next Milestone</div>
+                <div class="stat-value">150 Problems</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-trophy"></i> 23 to go
+                </div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="chart-card fade-in delay-2">
+                <div class="chart-header">
+                    <h3 class="chart-title">Problem Solving Trend</h3>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #6366f1;"></div>
+                            <span>Solved</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #10b981;"></div>
+                            <span>Easy</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #f59e0b;"></div>
+                            <span>Medium</span>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="problemsChart" height="300"></canvas>
+            </div>
+            
+            <div class="chart-card fade-in delay-3">
+                <div class="chart-header">
+                    <h3 class="chart-title">Skill Radar</h3>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #6366f1;"></div>
+                            <span>You</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #10b981;"></div>
+                            <span>Average</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="radar-container">
+                    <canvas id="radarChart" height="300"></canvas>
+                    <div class="radar-center-text">
+                        <div class="radar-center-value">87%</div>
+                        <div class="radar-center-label">Overall</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="practice-container fade-in delay-4">
+            <div class="practice-header">
+                <h2 class="practice-title">Recommended Problems</h2>
+                <button class="action-button" onclick="openCompiler()">
+                    <i class="fas fa-plus"></i> View All
+                </button>
+            </div>
+            <div class="problem-cards">
+                <div class="problem-card" onclick="openCompiler('Two Sum')">
+                    <div class="problem-difficulty easy">Easy</div>
+                    <h3 class="problem-title">Two Sum</h3>
+                    <p class="problem-description">
+                        Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+                    </p>
+                    <div class="problem-meta">
+                        <div class="problem-solved">
+                            <i class="fas fa-check-circle"></i> 85% solved
+                        </div>
+                        <div class="problem-points">10 pts</div>
+                    </div>
+                </div>
+                
+                <div class="problem-card" onclick="openCompiler('Reverse Linked List')">
+                    <div class="problem-difficulty medium">Medium</div>
+                    <h3 class="problem-title">Reverse Linked List</h3>
+                    <p class="problem-description">
+                        Given the head of a singly linked list, reverse the list and return the reversed list.
+                    </p>
+                    <div class="problem-meta">
+                        <div class="problem-solved">
+                            <i class="fas fa-check-circle"></i> 72% solved
+                        </div>
+                        <div class="problem-points">20 pts</div>
+                    </div>
+                </div>
+                
+                <div class="problem-card" onclick="openCompiler('Binary Tree Inorder Traversal')">
+                    <div class="problem-difficulty easy">Easy</div>
+                    <h3 class="problem-title">Binary Tree Inorder Traversal</h3>
+                    <p class="problem-description">
+                        Given the root of a binary tree, return the inorder traversal of its nodes' values.
+                    </p>
+                    <div class="problem-meta">
+                        <div class="problem-solved">
+                            <i class="fas fa-check-circle"></i> 78% solved
+                        </div>
+                        <div class="problem-points">15 pts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Compiler Modal -->
+    <div class="compiler-modal" id="compilerModal">
+        <div class="compiler-content">
+            <div class="compiler-header">
+                <h3 class="compiler-title" id="compilerProblemTitle">Two Sum</h3>
+                <button class="close-compiler" onclick="closeCompiler()">&times;</button>
+            </div>
+            <div class="compiler-body">
+                <div class="code-editor">
+                    <div class="editor-toolbar">
+                        <select class="language-selector" id="languageSelector">
+                            <option value="cpp">C++</option>
+                            <option value="java">Java</option>
+                            <option value="python" selected>Python</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
+                        <div class="editor-actions">
+                            <button class="editor-btn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="editor-btn">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="code-editor" spellcheck="false"># Write your code here
+def two_sum(nums, target):
+    pass</textarea>
+                    </div>
+                </div>
+                <div class="problem-info">
+                    <div class="problem-statement">
+                        <h3>Problem Statement</h3>
+                        <p>
+                            Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.
+                        </p>
+                        <p>
+                            You may assume that each input would have exactly one solution, and you may not use the same element twice.
+                        </p>
+                        <p>
+                            You can return the answer in any order.
+                        </p>
+                        
+                        <h3>Example 1:</h3>
+                        <p>
+                            <strong>Input:</strong> nums = [2,7,11,15], target = 9<br>
+                            <strong>Output:</strong> [0,1]<br>
+                            <strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].
+                        </p>
+                        
+                        <h3>Constraints:</h3>
+                        <ul>
+                            <li>2 <= nums.length <= 10<sup>4</sup></li>
+                            <li>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></li>
+                            <li>-10<sup>9</sup> <= target <= 10<sup>9</sup></li>
+                            <li>Only one valid answer exists.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="test-cases">
+                        <h3>Test Cases</h3>
+                        
+                        <div class="test-case">
+                            <div class="test-case-header">
+                                <div class="test-case-title">Case 1</div>
+                                <div class="test-case-status pending">Pending</div>
+                            </div>
+                            <div class="test-case-content">
+                                <div>
+                                    <div class="test-case-label">Input</div>
+                                    <div class="test-case-input">
+                                        <pre>nums = [2,7,11,15]
+target = 9</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="test-case-label">Expected Output</div>
+                                    <div class="test-case-output">
+                                        <pre>[0, 1]</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="test-case">
+                            <div class="test-case-header">
+                                <div class="test-case-title">Case 2</div>
+                                <div class="test-case-status pending">Pending</div>
+                            </div>
+                            <div class="test-case-content">
+                                <div>
+                                    <div class="test-case-label">Input</div>
+                                    <div class="test-case-input">
+                                        <pre>nums = [3,2,4]
+target = 6</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="test-case-label">Expected Output</div>
+                                    <div class="test-case-output">
+                                        <pre>[1, 2]</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="compiler-footer">
+                <div class="compiler-result">
+                    <i class="fas fa-circle-notch fa-spin result-icon"></i>
+                    <span class="result-text">Ready to run code</span>
+                </div>
+                <div class="compiler-actions">
+                    <button class="run-btn" onclick="runCode()">
+                        <i class="fas fa-play"></i> Run Code
+                    </button>
+                    <button class="submit-btn" onclick="submitCode()">
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Problems solved chart
+            const problemsCtx = document.getElementById('problemsChart').getContext('2d');
+            const problemsChart = new Chart(problemsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [
+                        {
+                            label: 'Total Solved',
+                            data: [12, 19, 15, 27, 34, 42, 49],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Easy',
+                            data: [8, 12, 10, 15, 20, 25, 30],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Medium',
+                            data: [4, 7, 5, 12, 14, 17, 19],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 6
+                        }
+                    }
+                }
+            });
+
+            // Radar chart
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            const radarChart = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Data Structures', 'Algorithms', 'Problem Solving', 'Language Proficiency', 'System Design', 'Debugging'],
+                    datasets: [
+                        {
+                            label: 'Your Skills',
+                            data: [85, 80, 90, 95, 75, 85],
+                            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                            borderColor: '#6366f1',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#6366f1',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Average',
+                            data: [65, 60, 70, 75, 55, 65],
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            },
+                            ticks: {
+                                display: false,
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Add floating code elements dynamically
+            const codeSnippets = [
+                "function binarySearch(arr, target) {",
+                "  let left = 0, right = arr.length - 1;",
+                "  while (left <= right) {",
+                "    const mid = Math.floor((left + right) / 2);",
+                "    if (arr[mid] === target) return mid;",
+                "    if (arr[mid] < target) left = mid + 1;",
+                "    else right = mid - 1;",
+                "  }",
+                "  return -1;",
+                "}",
+                "class TreeNode {",
+                "  constructor(val) {",
+                "    this.val = val;",
+                "    this.left = null;",
+                "    this.right = null;",
+                "  }",
+                "}",
+                "def quick_sort(arr):",
+                "    if len(arr) <= 1:",
+                "        return arr",
+                "    pivot = arr[len(arr) // 2]",
+                "    left = [x for x in arr if x < pivot]",
+                "    middle = [x for x in arr if x == pivot]",
+                "    right = [x for x in arr if x > pivot]",
+                "    return quick_sort(left) + middle + quick_sort(right)"
+            ];
+
+            const container = document.body;
+            for (let i = 0; i < 15; i++) {
+                const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                const element = document.createElement('div');
+                element.className = 'floating-code-element';
+                element.textContent = snippet;
+                element.style.top = `${Math.random() * 80 + 10}%`;
+                element.style.left = `${Math.random() * 80 + 10}%`;
+                element.style.opacity = Math.random() * 0.1 + 0.05;
+                element.style.fontSize = `${Math.random() * 0.4 + 0.6}rem`;
+                container.appendChild(element);
+            }
+        });
+
+        // Compiler modal functions
+        function openCompiler(problemTitle) {
+            if (problemTitle) {
+                document.getElementById('compilerProblemTitle').textContent = problemTitle;
+            }
+            document.getElementById('compilerModal').style.display = 'block';
+            setTimeout(() => {
+                document.querySelector('.compiler-content').style.transform = 'translateY(0)';
+                document.querySelector('.compiler-content').style.opacity = '1';
+            }, 10);
+        }
+
+        function closeCompiler() {
+            document.querySelector('.compiler-content').style.transform = 'translateY(-20px)';
+            document.querySelector('.compiler-content').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('compilerModal').style.display = 'none';
+            }, 300);
+        }
+
+        function runCode() {
+            const testCases = document.querySelectorAll('.test-case-status');
+            const resultDiv = document.querySelector('.compiler-result');
+            const resultIcon = resultDiv.querySelector('.result-icon');
+            const resultText = resultDiv.querySelector('.result-text');
+            
+            // Show loading state
+            resultIcon.className = 'fas fa-circle-notch fa-spin result-icon';
+            resultText.textContent = 'Running code...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Randomly pass/fail test cases for demo
+                testCases.forEach((testCase, index) => {
+                    setTimeout(() => {
+                        if (Math.random() > 0.3) {
+                            testCase.textContent = 'Passed';
+                            testCase.className = 'test-case-status passed';
+                        } else {
+                            testCase.textContent = 'Failed';
+                            testCase.className = 'test-case-status failed';
+                        }
+                    }, index * 500);
+                });
+                
+                // Show final result
+                setTimeout(() => {
+                    const passedCount = document.querySelectorAll('.test-case-status.passed').length;
+                    const totalCount = testCases.length;
+                    
+                    if (passedCount === totalCount) {
+                        resultIcon.className = 'fas fa-check-circle result-icon success';
+                        resultText.textContent = `All test cases passed (${passedCount}/${totalCount})`;
+                    } else {
+                        resultIcon.className = 'fas fa-times-circle result-icon error';
+                        resultText.textContent = `${passedCount} of ${totalCount} test cases passed`;
+                    }
+                }, testCases.length * 500 + 500);
+            }, 1500);
+        }
+
+        function submitCode() {
+            const resultDiv = document.querySelector('.compiler-result');
+            const resultIcon = resultDiv.querySelector('.result-icon');
+            const resultText = resultDiv.querySelector('.result-text');
+            
+            // Show loading state
+            resultIcon.className = 'fas fa-circle-notch fa-spin result-icon';
+            resultText.textContent = 'Submitting code...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                if (Math.random() > 0.2) {
+                    resultIcon.className = 'fas fa-check-circle result-icon success';
+                    resultText.textContent = 'Solution accepted! +15 points';
+                    
+                    // Update charts (in a real app, this would be done via API)
+                    const problemsChart = Chart.getChart('problemsChart');
+                    problemsChart.data.datasets[0].data[6] += 1;
+                    problemsChart.update();
+                } else {
+                    resultIcon.className = 'fas fa-times-circle result-icon error';
+                    resultText.textContent = 'Submission failed: Time Limit Exceeded';
+                }
+            }, 2000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('compiler-modal')) {
+                closeCompiler();
+            }
+        }
+
+        // Language selector change
+        document.getElementById('languageSelector').addEventListener('change', function() {
+            const language = this.value;
+            const editor = document.getElementById('code-editor');
+            
+            switch(language) {
+                case 'cpp':
+                    editor.value = `#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> numMap;
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+        if (numMap.count(complement)) {
+            return {numMap[complement], i};
+        }
+        numMap[nums[i]] = i;
+    }
+    return {};
+}
+
+int main() {
+    vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+    vector<int> result = twoSum(nums, target);
+    for (int num : result) {
+        cout << num << " ";
+    }
+    return 0;
+}`;
+                    break;
+                case 'java':
+                    editor.value = `import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> numMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (numMap.containsKey(complement)) {
+                return new int[] {numMap.get(complement), i};
+            }
+            numMap.put(nums[i], i);
+        }
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+        int[] result = solution.twoSum(nums, target);
+        for (int num : result) {
+            System.out.print(num + " ");
+        }
+    }
+}`;
+                    break;
+                case 'python':
+                    editor.value = `def two_sum(nums, target):
+    num_map = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_map:
+            return [num_map[complement], i]
+        num_map[num] = i
+    return []
+
+# Example usage
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))`;
+                    break;
+                case 'javascript':
+                    editor.value = `function twoSum(nums, target) {
+    const numMap = {};
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (complement in numMap) {
+            return [numMap[complement], i];
+        }
+        numMap[nums[i]] = i;
+    }
+    return [];
+}
+
+// Example usage
+const nums = [2, 7, 11, 15];
+const target = 9;
+console.log(twoSum(nums, target));`;
+                    break;
+            }
+        });
+
+        // Sidebar active item
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // In a real app, this would load the appropriate content
+                if (item.querySelector('.sidebar-text').textContent === 'Practice') {
+                    openCompiler();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
