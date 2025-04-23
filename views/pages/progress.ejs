@@ -1,663 +1,372 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achieva - Your Coding Journey</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2d3748;
-            --secondary: #4a5568;
-            --accent: #4299e1;
-            --light: #edf2f7;
-            --dark: #1a202c;
-            --success: #48bb78;
-        }
+<%- include('../partials/head') %>
+    <title>Achieva - Progress</title>
+    <link rel="stylesheet" href="/css/progress.css">
+    </head>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            color: var(--accent);
-            font-size: 2rem;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(to right, var(--accent), #5f67af);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-        }
-
-        .user-profile:hover .user-avatar {
-            transform: scale(1.1);
-        }
-
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem 0;
-            width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .user-profile:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .dropdown-item {
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--secondary);
-            text-decoration: none;
-            transition: background-color 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--light);
-            color: var(--accent);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background-color: var(--light);
-            margin: 0.25rem 0;
-        }
-
-        main {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .search-container {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 1.25rem 1.5rem;
-            border: none;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            background-color: white;
-            color: var(--dark);
-            outline: none;
-        }
-
-        .search-box:focus {
-            box-shadow: 0 4px 20px rgba(66, 153, 225, 0.3);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--secondary);
-        }
-
-        .courses-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .view-all {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .view-all:hover {
-            color: #3182ce;
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .course-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .course-image {
-            height: 160px;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .course-content {
-            padding: 1.25rem;
-        }
-
-        .course-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .course-description {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .course-duration {
-            font-size: 0.8rem;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #e2e8f0;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            height: 8px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: var(--accent);
-            border-radius: 0.5rem;
-            transition: width 0.5s ease;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        .floating-button {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 5;
-        }
-
-        .floating-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.5);
-        }
-
-        @media (max-width: 768px) {
-            .courses-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-            
-            header {
-                padding: 1rem;
-            }
-            
-            main {
-                padding: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-code"></i>
+    <body>
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">Achieva</div>
             </div>
-            <div class="logo-text">Achieva</div>
+
+            <div class="user-profile">
+                <div class="user-avatar pulse">
+                    <span>JD</span>
+                </div>
+                <div class="user-dropdown">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/login" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="search-container">
+                <input type="text" class="search-box"
+                    placeholder="Search for courses, tutorials, or coding challenges...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="courses-section">
+                <div class="courses-header">
+                    <h2 class="section-title">Your Coding Journey</h2>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+
+                <div class="courses-grid">
+                    <!-- Programming Languages -->
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #2b6cb0;">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">JavaScript Fundamentals</h3>
+                            <p class="course-description">Master the basics of JavaScript including variables,
+                                functions, and DOM manipulation.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 12 hours</span>
+                                <span class="course-status">65%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #3182ce;">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">React Masterclass</h3>
+                            <p class="course-description">Build modern web applications with React, hooks, and context
+                                API.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 30%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 25 hours</span>
+                                <span class="course-status">30%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #2c5282;">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Node.js Backend</h3>
+                            <p class="course-description">Learn to build scalable server-side applications with Node.js
+                                and Express.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 10%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 18 hours</span>
+                                <span class="course-status">10%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #4a5568;">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Python for Beginners</h3>
+                            <p class="course-description">Start your programming journey with Python, from basics to OOP
+                                concepts.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 15 hours</span>
+                                <span class="course-status">90%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Course Cards -->
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #5f370e;">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">MongoDB Essentials</h3>
+                            <p class="course-description">Learn NoSQL database concepts with MongoDB, including CRUD
+                                operations and aggregation.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 40%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 10 hours</span>
+                                <span class="course-status">40%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #9f7aea;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Firebase Development</h3>
+                            <p class="course-description">Build real-time applications with Firebase Authentication,
+                                Firestore, and Cloud Functions.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 25%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 14 hours</span>
+                                <span class="course-status">25%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #38b2ac;">
+                            <i class="fab fa-android"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Flutter Mobile Dev</h3>
+                            <p class="course-description">Create cross-platform mobile apps with Flutter and Dart
+                                framework.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 15%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 20 hours</span>
+                                <span class="course-status">15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #e53e3e;">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Java Programming</h3>
+                            <p class="course-description">Master Java fundamentals, OOP principles, and advanced
+                                concepts like multithreading.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 30 hours</span>
+                                <span class="course-status">70%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #805ad5;">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Machine Learning</h3>
+                            <p class="course-description">Introduction to ML algorithms, data preprocessing, and model
+                                evaluation with Python.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 20%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 35 hours</span>
+                                <span class="course-status">20%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #d53f8c;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Artificial Intelligence</h3>
+                            <p class="course-description">Explore AI concepts including neural networks, computer
+                                vision, and natural language processing.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 5%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 40 hours</span>
+                                <span class="course-status">5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #3182ce;">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Natural Language Processing</h3>
+                            <p class="course-description">Learn text processing, sentiment analysis, and language models
+                                with Python.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 10%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 22 hours</span>
+                                <span class="course-status">10%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #dd6b20;">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">C++ Programming</h3>
+                            <p class="course-description">Master C++ from basics to advanced topics like memory
+                                management and templates.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 50%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 25 hours</span>
+                                <span class="course-status">50%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #38a169;">
+                            <i class="fas fa-copyright"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">C Programming</h3>
+                            <p class="course-description">Learn the fundamentals of C programming, pointers, and memory
+                                management.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 18 hours</span>
+                                <span class="course-status">80%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #00b5d8;">
+                            <i class="fab fa-vuejs"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Vue.js Fundamentals</h3>
+                            <p class="course-description">Build reactive web applications with Vue.js, Vuex, and Vue
+                                Router.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 45%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 15 hours</span>
+                                <span class="course-status">45%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #0987a0;">
+                            <i class="fab fa-docker"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Docker & Kubernetes</h3>
+                            <p class="course-description">Containerize applications with Docker and orchestrate them
+                                with Kubernetes.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 30%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 12 hours</span>
+                                <span class="course-status">30%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #b83280;">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">Data Structures & Algorithms</h3>
+                            <p class="course-description">Master essential data structures and algorithms for technical
+                                interviews.</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 60%"></div>
+                            </div>
+                            <div class="course-meta">
+                                <span class="course-duration"><i class="far fa-clock"></i> 35 hours</span>
+                                <span class="course-status">60%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="floating-button">
+            <i class="fas fa-plus"></i>
         </div>
-        
-        <div class="user-profile">
-            <div class="user-avatar pulse">
-                <span>JD</span>
-            </div>
-            <div class="user-dropdown">
-                <a href="/profile" class="dropdown-item">
-                    <i class="fas fa-user"></i> Profile
-                </a>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-cog"></i> Settings
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="/login" class="dropdown-item">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        </div>
-    </header>
-    
-    <main>
-        <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search for courses, tutorials, or coding challenges...">
-            <i class="fas fa-search search-icon"></i>
-        </div>
-        
-        <div class="courses-section">
-            <div class="courses-header">
-                <h2 class="section-title">Your Coding Journey</h2>
-                <a href="#" class="view-all">View All</a>
-            </div>
-            
-            <div class="courses-grid">
-                <!-- Programming Languages -->
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #2b6cb0;">
-                        <i class="fab fa-js"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">JavaScript Fundamentals</h3>
-                        <p class="course-description">Master the basics of JavaScript including variables, functions, and DOM manipulation.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 65%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 12 hours</span>
-                            <span class="course-status">65%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #3182ce;">
-                        <i class="fab fa-react"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">React Masterclass</h3>
-                        <p class="course-description">Build modern web applications with React, hooks, and context API.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 30%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 25 hours</span>
-                            <span class="course-status">30%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #2c5282;">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Node.js Backend</h3>
-                        <p class="course-description">Learn to build scalable server-side applications with Node.js and Express.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 10%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 18 hours</span>
-                            <span class="course-status">10%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #4a5568;">
-                        <i class="fab fa-python"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Python for Beginners</h3>
-                        <p class="course-description">Start your programming journey with Python, from basics to OOP concepts.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 90%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 15 hours</span>
-                            <span class="course-status">90%</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- New Course Cards -->
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #5f370e;">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">MongoDB Essentials</h3>
-                        <p class="course-description">Learn NoSQL database concepts with MongoDB, including CRUD operations and aggregation.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 40%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 10 hours</span>
-                            <span class="course-status">40%</span>
-                        </div>
-                    </div>
-                </div>
+        <script>
+            // Simple animation for the search box on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchBox = document.querySelector('.search-box');
+                searchBox.style.opacity = '0';
+                searchBox.style.transform = 'translateY(20px)';
 
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #9f7aea;">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Firebase Development</h3>
-                        <p class="course-description">Build real-time applications with Firebase Authentication, Firestore, and Cloud Functions.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 25%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 14 hours</span>
-                            <span class="course-status">25%</span>
-                        </div>
-                    </div>
-                </div>
+                setTimeout(() => {
+                    searchBox.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    searchBox.style.opacity = '1';
+                    searchBox.style.transform = 'translateY(0)';
+                }, 300);
 
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #38b2ac;">
-                        <i class="fab fa-android"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Flutter Mobile Dev</h3>
-                        <p class="course-description">Create cross-platform mobile apps with Flutter and Dart framework.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 15%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 20 hours</span>
-                            <span class="course-status">15%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #e53e3e;">
-                        <i class="fab fa-java"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Java Programming</h3>
-                        <p class="course-description">Master Java fundamentals, OOP principles, and advanced concepts like multithreading.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 70%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 30 hours</span>
-                            <span class="course-status">70%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #805ad5;">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Machine Learning</h3>
-                        <p class="course-description">Introduction to ML algorithms, data preprocessing, and model evaluation with Python.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 20%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 35 hours</span>
-                            <span class="course-status">20%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #d53f8c;">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Artificial Intelligence</h3>
-                        <p class="course-description">Explore AI concepts including neural networks, computer vision, and natural language processing.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 5%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 40 hours</span>
-                            <span class="course-status">5%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #3182ce;">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Natural Language Processing</h3>
-                        <p class="course-description">Learn text processing, sentiment analysis, and language models with Python.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 10%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 22 hours</span>
-                            <span class="course-status">10%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #dd6b20;">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">C++ Programming</h3>
-                        <p class="course-description">Master C++ from basics to advanced topics like memory management and templates.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 50%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 25 hours</span>
-                            <span class="course-status">50%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #38a169;">
-                        <i class="fas fa-copyright"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">C Programming</h3>
-                        <p class="course-description">Learn the fundamentals of C programming, pointers, and memory management.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 80%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 18 hours</span>
-                            <span class="course-status">80%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #00b5d8;">
-                        <i class="fab fa-vuejs"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Vue.js Fundamentals</h3>
-                        <p class="course-description">Build reactive web applications with Vue.js, Vuex, and Vue Router.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 45%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 15 hours</span>
-                            <span class="course-status">45%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #0987a0;">
-                        <i class="fab fa-docker"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Docker & Kubernetes</h3>
-                        <p class="course-description">Containerize applications with Docker and orchestrate them with Kubernetes.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 30%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 12 hours</span>
-                            <span class="course-status">30%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image" style="background-color: #b83280;">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">Data Structures & Algorithms</h3>
-                        <p class="course-description">Master essential data structures and algorithms for technical interviews.</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: 60%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span class="course-duration"><i class="far fa-clock"></i> 35 hours</span>
-                            <span class="course-status">60%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-    <div class="floating-button">
-        <i class="fas fa-plus"></i>
-    </div>
-
-    <script>
-        // Simple animation for the search box on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchBox = document.querySelector('.search-box');
-            searchBox.style.opacity = '0';
-            searchBox.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                searchBox.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                searchBox.style.opacity = '1';
-                searchBox.style.transform = 'translateY(0)';
-            }, 300);
-            
-            // Course card hover effect enhancement
-            const courseCards = document.querySelectorAll('.course-card');
-            courseCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.querySelector('.course-image').style.transform = 'scale(1.05)';
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.querySelector('.course-image').style.transform = 'scale(1)';
+                // Course card hover effect enhancement
+                const courseCards = document.querySelectorAll('.course-card');
+                courseCards.forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        card.querySelector('.course-image').style.transform = 'scale(1.05)';
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.querySelector('.course-image').style.transform = 'scale(1)';
+                    });
                 });
             });
-        });
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+
+    </html>

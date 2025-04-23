@@ -1,633 +1,258 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achieva - CV & Resume Guide</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1e293b;
-            --secondary: #334155;
-            --accent: #6366f1;
-            --accent-dark: #4f46e5;
-            --light: #f1f5f9;
-            --dark: #0f172a;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
+<%- include('../partials/head') %>
+    <title>Achieva - Resume</title>
+    <link rel="stylesheet" href="/css/resume.css">
+    </head>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
-                linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 1));
-        }
-
-        /* Header */
-        header {
-            background-color: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            color: var(--accent);
-            font-size: 2rem;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(to right, var(--accent), #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-        }
-
-        .user-profile:hover .user-avatar {
-            transform: scale(1.1);
-        }
-
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: var(--primary);
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            padding: 0.5rem 0;
-            width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 10;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .user-profile:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .dropdown-item {
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background-color: rgba(99, 102, 241, 0.2);
-            color: var(--accent);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background-color: rgba(99, 102, 241, 0.2);
-            margin: 0.25rem 0;
-        }
-
-        /* Main Content */
-        main {
-            padding: 6rem 2rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(to right, var(--light), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .section-subtitle {
-            font-size: 1.25rem;
-            opacity: 0.8;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s forwards;
-            opacity: 0;
-        }
-
-        /* Resume Guide Cards */
-        .guide-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .guide-card {
-            background-color: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .guide-card:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
-        .guide-card:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
-        .guide-card:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.6s forwards; }
-        .guide-card:nth-child(4) { animation: fadeInUp 0.8s ease-out 0.8s forwards; }
-
-        .guide-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        .guide-icon {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .guide-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .guide-description {
-            opacity: 0.8;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .guide-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .guide-link:hover {
-            color: var(--accent-dark);
-        }
-
-        /* ATI Score Section */
-        .ati-section {
-            background-color: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            animation: fadeInUp 1s ease-out 0.4s forwards;
-            opacity: 0;
-        }
-
-        .ati-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .ati-formula {
-            background-color: rgba(15, 23, 42, 0.8);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            font-family: 'Fira Code', monospace;
-            margin-bottom: 1.5rem;
-            border-left: 3px solid var(--accent);
-        }
-
-        .ati-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-        }
-
-        .ati-table th, .ati-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .ati-table th {
-            background-color: rgba(99, 102, 241, 0.2);
-            color: var(--accent);
-        }
-
-        /* Resume Examples */
-        .examples-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .example-card {
-            background-color: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            overflow: hidden;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .example-card:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
-        .example-card:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
-        .example-card:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.6s forwards; }
-
-        .example-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        .example-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .example-content {
-            padding: 1.5rem;
-        }
-
-        .example-title {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-
-        .example-type {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background-color: rgba(99, 102, 241, 0.2);
-            color: var(--accent);
-        }
-
-        .example-description {
-            opacity: 0.8;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .example-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .example-link:hover {
-            color: var(--accent-dark);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px);
-            }
-            50% {
-                transform: translateY(0) translateX(20px);
-            }
-            75% {
-                transform: translateY(20px) translateX(10px);
-            }
-            100% {
-                transform: translateY(0) translateX(0);
-            }
-        }
-
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .guide-container, .examples-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-code"></i>
-            </div>
-            <div class="logo-text">Achieva</div>
-        </div>
-        
-        <div class="user-profile">
-            <div class="user-avatar">
-                <span>MOA</span>
-            </div>
-            <div class="user-dropdown">
-                <a href="/profile" class="dropdown-item">
-                    <i class="fas fa-user"></i> Profile
-                </a>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-cog"></i> Settings
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="/login" class="dropdown-item">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <h1 class="section-title">The Ultimate CV & Resume Guide</h1>
-        <p class="section-subtitle">Learn how to create a professional resume, understand ATI scores, and get hired faster.</p>
-        
-        <!-- Resume Guide Cards -->
-        <div class="guide-container">
-            <div class="guide-card">
-                <div class="guide-icon">
-                    <i class="fas fa-file-alt"></i>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
                 </div>
-                <h3 class="guide-title">Resume Basics</h3>
-                <p class="guide-description">
-                    Learn the essential components of a strong resume: contact info, summary, work experience, education, and skills.
-                </p>
-                <a href="#" class="guide-link">
-                    Read More <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="logo-text">Achieva</div>
             </div>
-            
-            <div class="guide-card">
-                <div class="guide-icon">
-                    <i class="fas fa-chart-bar"></i>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <span>MOA</span>
                 </div>
-                <h3 class="guide-title">ATI Score Explained</h3>
-                <p class="guide-description">
-                    Understand how Applicant Tracking Systems (ATS) score your resume and how to optimize for it.
-                </p>
-                <a href="#ati" class="guide-link">
-                    Learn More <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            
-            <div class="guide-card">
-                <div class="guide-icon">
-                    <i class="fas fa-magic"></i>
-                </div>
-                <h3 class="guide-title">Resume Design</h3>
-                <p class="guide-description">
-                    Discover the best resume formats (chronological, functional, hybrid) and design principles.
-                </p>
-                <a href="#" class="guide-link">
-                    Explore <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            
-            <div class="guide-card">
-                <div class="guide-icon">
-                    <i class="fas fa-bullseye"></i>
-                </div>
-                <h3 class="guide-title">Tailoring Your Resume</h3>
-                <p class="guide-description">
-                    Learn how to customize your resume for specific job applications to increase interview chances.
-                </p>
-                <a href="#" class="guide-link">
-                    Get Started <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        
-        <!-- ATI Score Section -->
-        <div class="ati-section" id="ati">
-            <h2 class="ati-title">Understanding ATI (Applicant Tracking Index) Scores</h2>
-            <p class="guide-description">
-                Many companies use <strong>Applicant Tracking Systems (ATS)</strong> to filter resumes before they reach human recruiters. Your <strong>ATI Score</strong> determines how well your resume matches the job description.
-            </p>
-            
-            <div class="ati-formula">
-                <strong>ATI Score Formula:</strong><br>
-                ATI = (Keyword Match × 0.4) + (Experience Relevance × 0.3) + (Education Match × 0.2) + (Formatting Score × 0.1)
-            </div>
-            
-            <h3 class="guide-title">ATI Score Classification</h3>
-            <table class="ati-table">
-                <thead>
-                    <tr>
-                        <th>Score Range</th>
-                        <th>Classification</th>
-                        <th>Recommendation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>90-100</td>
-                        <td>Excellent Match</td>
-                        <td>High chance of interview</td>
-                    </tr>
-                    <tr>
-                        <td>70-89</td>
-                        <td>Good Match</td>
-                        <td>Likely to be reviewed</td>
-                    </tr>
-                    <tr>
-                        <td>50-69</td>
-                        <td>Average Match</td>
-                        <td>Needs improvement</td>
-                    </tr>
-                    <tr>
-                        <td>0-49</td>
-                        <td>Poor Match</td>
-                        <td>Unlikely to pass ATS</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="guide-title">How to Improve Your ATI Score</h3>
-            <ul style="margin-left: 1.5rem; line-height: 1.6; opacity: 0.9;">
-                <li>Use <strong>keywords</strong> from the job description</li>
-                <li>Keep formatting <strong>simple and clean</strong></li>
-                <li>Highlight <strong>relevant experience</strong></li>
-                <li>Avoid <strong>graphics and tables</strong> (ATS struggles with them)</li>
-                <li>Use <strong>standard headings</strong> (e.g., "Work Experience")</li>
-            </ul>
-        </div>
-        
-        <!-- Resume Examples -->
-        <h2 class="section-title">Professional Resume Examples</h2>
-        <p class="section-subtitle">Explore different resume formats for various career stages.</p>
-        
-        <div class="examples-container">
-            <div class="example-card">
-                <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Chronological+Resume" alt="Chronological Resume" class="example-image">
-                <div class="example-content">
-                    <span class="example-type">Chronological</span>
-                    <h3 class="example-title">Experienced Professional</h3>
-                    <p class="example-description">
-                        Ideal for candidates with a strong work history in the same field.
-                    </p>
-                    <a href="#" class="example-link">
-                        Download Template <i class="fas fa-download"></i>
+                <div class="user-dropdown">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/login" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </div>
             </div>
-            
-            <div class="example-card">
-                <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Functional+Resume" alt="Functional Resume" class="example-image">
-                <div class="example-content">
-                    <span class="example-type">Functional</span>
-                    <h3 class="example-title">Career Changer</h3>
-                    <p class="example-description">
-                        Best for those with gaps in employment or changing industries.
-                    </p>
-                    <a href="#" class="example-link">
-                        Download Template <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="example-card">
-                <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Hybrid+Resume" alt="Hybrid Resume" class="example-image">
-                <div class="example-content">
-                    <span class="example-type">Hybrid</span>
-                    <h3 class="example-title">Recent Graduate</h3>
-                    <p class="example-description">
-                        Combines skills and work history, great for entry-level candidates.
-                    </p>
-                    <a href="#" class="example-link">
-                        Download Template <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
+        </header>
 
-    <script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        <!-- Main Content -->
+        <main>
+            <h1 class="section-title">The Ultimate CV & Resume Guide</h1>
+            <p class="section-subtitle">Learn how to create a professional resume, understand ATI scores, and get hired
+                faster.</p>
+
+            <!-- Resume Guide Cards -->
+            <div class="guide-container">
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="guide-title">Resume Basics</h3>
+                    <p class="guide-description">
+                        Learn the essential components of a strong resume: contact info, summary, work experience,
+                        education, and skills.
+                    </p>
+                    <a href="#" class="guide-link">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="guide-title">ATI Score Explained</h3>
+                    <p class="guide-description">
+                        Understand how Applicant Tracking Systems (ATS) score your resume and how to optimize for it.
+                    </p>
+                    <a href="#ati" class="guide-link">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="guide-title">Resume Design</h3>
+                    <p class="guide-description">
+                        Discover the best resume formats (chronological, functional, hybrid) and design principles.
+                    </p>
+                    <a href="#" class="guide-link">
+                        Explore <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="guide-title">Tailoring Your Resume</h3>
+                    <p class="guide-description">
+                        Learn how to customize your resume for specific job applications to increase interview chances.
+                    </p>
+                    <a href="#" class="guide-link">
+                        Get Started <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ATI Score Section -->
+            <div class="ati-section" id="ati">
+                <h2 class="ati-title">Understanding ATI (Applicant Tracking Index) Scores</h2>
+                <p class="guide-description">
+                    Many companies use <strong>Applicant Tracking Systems (ATS)</strong> to filter resumes before they
+                    reach human recruiters. Your <strong>ATI Score</strong> determines how well your resume matches the
+                    job description.
+                </p>
+
+                <div class="ati-formula">
+                    <strong>ATI Score Formula:</strong><br>
+                    ATI = (Keyword Match × 0.4) + (Experience Relevance × 0.3) + (Education Match × 0.2) + (Formatting
+                    Score × 0.1)
+                </div>
+
+                <h3 class="guide-title">ATI Score Classification</h3>
+                <table class="ati-table">
+                    <thead>
+                        <tr>
+                            <th>Score Range</th>
+                            <th>Classification</th>
+                            <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>90-100</td>
+                            <td>Excellent Match</td>
+                            <td>High chance of interview</td>
+                        </tr>
+                        <tr>
+                            <td>70-89</td>
+                            <td>Good Match</td>
+                            <td>Likely to be reviewed</td>
+                        </tr>
+                        <tr>
+                            <td>50-69</td>
+                            <td>Average Match</td>
+                            <td>Needs improvement</td>
+                        </tr>
+                        <tr>
+                            <td>0-49</td>
+                            <td>Poor Match</td>
+                            <td>Unlikely to pass ATS</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="guide-title">How to Improve Your ATI Score</h3>
+                <ul style="margin-left: 1.5rem; line-height: 1.6; opacity: 0.9;">
+                    <li>Use <strong>keywords</strong> from the job description</li>
+                    <li>Keep formatting <strong>simple and clean</strong></li>
+                    <li>Highlight <strong>relevant experience</strong></li>
+                    <li>Avoid <strong>graphics and tables</strong> (ATS struggles with them)</li>
+                    <li>Use <strong>standard headings</strong> (e.g., "Work Experience")</li>
+                </ul>
+            </div>
+
+            <!-- Resume Examples -->
+            <h2 class="section-title">Professional Resume Examples</h2>
+            <p class="section-subtitle">Explore different resume formats for various career stages.</p>
+
+            <div class="examples-container">
+                <div class="example-card">
+                    <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Chronological+Resume"
+                        alt="Chronological Resume" class="example-image">
+                    <div class="example-content">
+                        <span class="example-type">Chronological</span>
+                        <h3 class="example-title">Experienced Professional</h3>
+                        <p class="example-description">
+                            Ideal for candidates with a strong work history in the same field.
+                        </p>
+                        <a href="#" class="example-link">
+                            Download Template <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Functional+Resume"
+                        alt="Functional Resume" class="example-image">
+                    <div class="example-content">
+                        <span class="example-type">Functional</span>
+                        <h3 class="example-title">Career Changer</h3>
+                        <p class="example-description">
+                            Best for those with gaps in employment or changing industries.
+                        </p>
+                        <a href="#" class="example-link">
+                            Download Template <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <img src="https://via.placeholder.com/600x400/1e293b/6366f1?text=Hybrid+Resume" alt="Hybrid Resume"
+                        class="example-image">
+                    <div class="example-content">
+                        <span class="example-type">Hybrid</span>
+                        <h3 class="example-title">Recent Graduate</h3>
+                        <p class="example-description">
+                            Combines skills and work history, great for entry-level candidates.
+                        </p>
+                        <a href="#" class="example-link">
+                            Download Template <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 });
             });
-        });
 
-        // Add floating code elements dynamically
-        const codeSnippets = [
-            "function optimizeResume() {",
-            "  const keywords = jobDescription.match(/\\w+/g);",
-            "  let score = 0;",
-            "  keywords.forEach(word => {",
-            "    if (resumeText.includes(word)) score += 1;",
-            "  });",
-            "  return score;",
-            "}",
-            "class Resume {",
-            "  constructor(name, experience) {",
-            "    this.name = name;",
-            "    this.experience = experience;",
-            "  }",
-            "  getATIScore() {",
-            "    return calculateScore(this);",
-            "  }",
-            "}"
-        ];
+            // Add floating code elements dynamically
+            const codeSnippets = [
+                "function optimizeResume() {",
+                "  const keywords = jobDescription.match(/\\w+/g);",
+                "  let score = 0;",
+                "  keywords.forEach(word => {",
+                "    if (resumeText.includes(word)) score += 1;",
+                "  });",
+                "  return score;",
+                "}",
+                "class Resume {",
+                "  constructor(name, experience) {",
+                "    this.name = name;",
+                "    this.experience = experience;",
+                "  }",
+                "  getATIScore() {",
+                "    return calculateScore(this);",
+                "  }",
+                "}"
+            ];
 
-        const container = document.body;
-        for (let i = 0; i < 10; i++) {
-            const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-            const element = document.createElement('div');
-            element.className = 'floating-code';
-            element.textContent = snippet;
-            element.style.position = 'fixed';
-            element.style.top = `${Math.random() * 80 + 10}%`;
-            element.style.left = `${Math.random() * 80 + 10}%`;
-            element.style.opacity = Math.random() * 0.1 + 0.05;
-            element.style.fontSize = `${Math.random() * 0.4 + 0.6}rem`;
-            element.style.animation = `float 15s infinite linear ${Math.random() * 15}s`;
-            element.style.pointerEvents = 'none';
-            element.style.zIndex = '-1';
-            container.appendChild(element);
-        }
-    </script>
-</body>
-</html>
+            const container = document.body;
+            for (let i = 0; i < 10; i++) {
+                const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                const element = document.createElement('div');
+                element.className = 'floating-code';
+                element.textContent = snippet;
+                element.style.position = 'fixed';
+                element.style.top = `${Math.random() * 80 + 10}%`;
+                element.style.left = `${Math.random() * 80 + 10}%`;
+                element.style.opacity = Math.random() * 0.1 + 0.05;
+                element.style.fontSize = `${Math.random() * 0.4 + 0.6}rem`;
+                element.style.animation = `float 15s infinite linear ${Math.random() * 15}s`;
+                element.style.pointerEvents = 'none';
+                element.style.zIndex = '-1';
+                container.appendChild(element);
+            }
+        </script>
+    </body>
+
+    </html>

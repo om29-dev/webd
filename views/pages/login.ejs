@@ -1,442 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeTrack - Authentication</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2d3748;
-            --secondary: #4a5568;
-            --accent: #4299e1;
-            --light: #edf2f7;
-            --dark: #1a202c;
-            --success: #48bb78;
-            --error: #e53e3e;
-        }
+<%- include('../partials/head') %>
+    <title>Achieva - Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+    </head>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-card {
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: all 0.5s ease;
-            transform: translateY(20px);
-            opacity: 0;
-        }
-
-        .auth-card.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .logo-icon {
-            color: var(--accent);
-            font-size: 2rem;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(to right, var(--accent), #5f67af);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .auth-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-subtitle {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-            outline: none;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--secondary);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #3182ce;
-        }
-
-        .auth-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--secondary);
-        }
-
-        .auth-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .auth-link:hover {
-            color: #3182ce;
-        }
-
-        .error-message {
-            color: var(--error);
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .success-message {
-            color: var(--success);
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s forwards;
-        }
-
-        .slide-out {
-            animation: slideOut 0.5s forwards;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @media (max-width: 480px) {
-            .auth-container {
-                padding: 1rem;
-            }
-            
-            .auth-card {
-                padding: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="auth-container">
-        <!-- Login Form -->
-        <div class="auth-card" id="login-card">
-            <div class="auth-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-code"></i>
+    <body>
+        <div class="auth-container">
+            <!-- Login Form -->
+            <div class="auth-card" id="login-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
                     </div>
-                    <div class="logo-text">CodeTrack</div>
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">Please enter your credentials to login</p>
                 </div>
-                <h1 class="auth-title">Welcome Back</h1>
-                <p class="auth-subtitle">Please enter your credentials to login</p>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email" class="form-label">Email</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="Enter your email" required>
+                        <div class="error-message" id="login-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password"
+                            required>
+                        <i class="fas fa-eye password-toggle" id="login-toggle-password"></i>
+                        <div class="error-message" id="login-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" class="auth-link" id="show-signup">Sign up</a></p>
+                    <p><a href="#" class="auth-link" id="show-forgot">Forgot password?</a></p>
+                </div>
             </div>
-            
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-email" class="form-label">Email</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="Enter your email" required>
-                    <div class="error-message" id="login-email-error"></div>
+
+            <!-- Signup Form -->
+            <div class="auth-card hidden" id="signup-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
+                    </div>
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-subtitle">Join us to start your coding journey</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="login-password" class="form-label">Password</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
-                    <i class="fas fa-eye password-toggle" id="login-toggle-password"></i>
-                    <div class="error-message" id="login-password-error"></div>
+
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label">Full Name</label>
+                        <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name"
+                            required>
+                        <div class="error-message" id="signup-name-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label">Email</label>
+                        <input type="email" id="signup-email" class="form-input" placeholder="Enter your email"
+                            required>
+                        <div class="error-message" id="signup-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label">Password</label>
+                        <input type="password" id="signup-password" class="form-input" placeholder="Create a password"
+                            required>
+                        <i class="fas fa-eye password-toggle" id="signup-toggle-password"></i>
+                        <div class="error-message" id="signup-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-confirm" class="form-label">Confirm Password</label>
+                        <input type="password" id="signup-confirm" class="form-input"
+                            placeholder="Confirm your password" required>
+                        <div class="error-message" id="signup-confirm-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" class="auth-link" id="show-login">Login</a></p>
                 </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-card hidden" id="forgot-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
+                    </div>
+                    <h1 class="auth-title">Reset Password</h1>
+                    <p class="auth-subtitle">Enter your email to receive a reset link</p>
                 </div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Don't have an account? <a href="#" class="auth-link" id="show-signup">Sign up</a></p>
-                <p><a href="#" class="auth-link" id="show-forgot">Forgot password?</a></p>
+
+                <form id="forgot-form">
+                    <div class="form-group">
+                        <label for="forgot-email" class="form-label">Email</label>
+                        <input type="email" id="forgot-email" class="form-input" placeholder="Enter your email"
+                            required>
+                        <div class="error-message" id="forgot-email-error"></div>
+                        <div class="success-message" id="forgot-success">Password reset link has been sent to your
+                            email!</div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Remember your password? <a href="#" class="auth-link" id="show-login-2">Login</a></p>
+                </div>
             </div>
         </div>
-        
-        <!-- Signup Form -->
-        <div class="auth-card hidden" id="signup-card">
-            <div class="auth-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="logo-text">CodeTrack</div>
-                </div>
-                <h1 class="auth-title">Create Account</h1>
-                <p class="auth-subtitle">Join us to start your coding journey</p>
-            </div>
-            
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-name" class="form-label">Full Name</label>
-                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name" required>
-                    <div class="error-message" id="signup-name-error"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signup-email" class="form-label">Email</label>
-                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email" required>
-                    <div class="error-message" id="signup-email-error"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signup-password" class="form-label">Password</label>
-                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password" required>
-                    <i class="fas fa-eye password-toggle" id="signup-toggle-password"></i>
-                    <div class="error-message" id="signup-password-error"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signup-confirm" class="form-label">Confirm Password</label>
-                    <input type="password" id="signup-confirm" class="form-input" placeholder="Confirm your password" required>
-                    <div class="error-message" id="signup-confirm-error"></div>
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Already have an account? <a href="#" class="auth-link" id="show-login">Login</a></p>
-            </div>
-        </div>
-        
-        <!-- Forgot Password Form -->
-        <div class="auth-card hidden" id="forgot-card">
-            <div class="auth-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="logo-text">CodeTrack</div>
-                </div>
-                <h1 class="auth-title">Reset Password</h1>
-                <p class="auth-subtitle">Enter your email to receive a reset link</p>
-            </div>
-            
-            <form id="forgot-form">
-                <div class="form-group">
-                    <label for="forgot-email" class="form-label">Email</label>
-                    <input type="email" id="forgot-email" class="form-input" placeholder="Enter your email" required>
-                    <div class="error-message" id="forgot-email-error"></div>
-                    <div class="success-message" id="forgot-success">Password reset link has been sent to your email!</div>
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Send Reset Link</button>
-                </div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Remember your password? <a href="#" class="auth-link" id="show-login-2">Login</a></p>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the login card
-            const loginCard = document.getElementById('login-card');
-            loginCard.classList.add('active');
-            
-            // Password toggle functionality
-            function setupPasswordToggle(toggleId, inputId) {
-                const toggle = document.getElementById(toggleId);
-                const input = document.getElementById(inputId);
-                
-                toggle.addEventListener('click', function() {
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        toggle.classList.replace('fa-eye', 'fa-eye-slash');
-                    } else {
-                        input.type = 'password';
-                        toggle.classList.replace('fa-eye-slash', 'fa-eye');
-                    }
-                });
-            }
-            
-            setupPasswordToggle('login-toggle-password', 'login-password');
-            setupPasswordToggle('signup-toggle-password', 'signup-password');
-            
-            // Form switching with animations
-            function switchForms(hideId, showId) {
-                const hideCard = document.getElementById(hideId);
-                const showCard = document.getElementById(showId);
-                
-                hideCard.classList.add('slide-out');
-                setTimeout(() => {
-                    hideCard.classList.add('hidden');
-                    hideCard.classList.remove('slide-out', 'active');
-                    
-                    showCard.classList.remove('hidden');
-                    showCard.classList.add('slide-in', 'active');
-                    
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize the login card
+                const loginCard = document.getElementById('login-card');
+                loginCard.classList.add('active');
+
+                // Password toggle functionality
+                function setupPasswordToggle(toggleId, inputId) {
+                    const toggle = document.getElementById(toggleId);
+                    const input = document.getElementById(inputId);
+
+                    toggle.addEventListener('click', function () {
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            toggle.classList.replace('fa-eye', 'fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            toggle.classList.replace('fa-eye-slash', 'fa-eye');
+                        }
+                    });
+                }
+
+                setupPasswordToggle('login-toggle-password', 'login-password');
+                setupPasswordToggle('signup-toggle-password', 'signup-password');
+
+                // Form switching with animations
+                function switchForms(hideId, showId) {
+                    const hideCard = document.getElementById(hideId);
+                    const showCard = document.getElementById(showId);
+
+                    hideCard.classList.add('slide-out');
                     setTimeout(() => {
-                        showCard.classList.remove('slide-in');
+                        hideCard.classList.add('hidden');
+                        hideCard.classList.remove('slide-out', 'active');
+
+                        showCard.classList.remove('hidden');
+                        showCard.classList.add('slide-in', 'active');
+
+                        setTimeout(() => {
+                            showCard.classList.remove('slide-in');
+                        }, 500);
                     }, 500);
-                }, 500);
-            }
-            
-            document.getElementById('show-signup').addEventListener('click', function(e) {
-                e.preventDefault();
-                switchForms('login-card', 'signup-card');
+                }
+
+                document.getElementById('show-signup').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('login-card', 'signup-card');
+                });
+
+                document.getElementById('show-login').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('signup-card', 'login-card');
+                });
+
+                document.getElementById('show-forgot').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('login-card', 'forgot-card');
+                });
+
+                document.getElementById('show-login-2').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('forgot-card', 'login-card');
+                });
+
+                // Form validation and submission
+                document.getElementById('login-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your login logic here
+                    console.log('Login form submitted');
+                    // Redirect to course list after successful login
+                    window.location.href = 'course list.html';
+                });
+
+                document.getElementById('signup-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your signup logic here
+                    console.log('Signup form submitted');
+                    // After successful signup, switch to login
+                    switchForms('signup-card', 'login-card');
+                });
+
+                document.getElementById('forgot-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your forgot password logic here
+                    console.log('Forgot password form submitted');
+                    // Show success message
+                    document.getElementById('forgot-success').style.display = 'block';
+                });
             });
-            
-            document.getElementById('show-login').addEventListener('click', function(e) {
-                e.preventDefault();
-                switchForms('signup-card', 'login-card');
-            });
-            
-            document.getElementById('show-forgot').addEventListener('click', function(e) {
-                e.preventDefault();
-                switchForms('login-card', 'forgot-card');
-            });
-            
-            document.getElementById('show-login-2').addEventListener('click', function(e) {
-                e.preventDefault();
-                switchForms('forgot-card', 'login-card');
-            });
-            
-            // Form validation and submission
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Add your login logic here
-                console.log('Login form submitted');
-                // Redirect to course list after successful login
-                window.location.href = 'course list.html';
-            });
-            
-            document.getElementById('signup-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Add your signup logic here
-                console.log('Signup form submitted');
-                // After successful signup, switch to login
-                switchForms('signup-card', 'login-card');
-            });
-            
-            document.getElementById('forgot-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Add your forgot password logic here
-                console.log('Forgot password form submitted');
-                // Show success message
-                document.getElementById('forgot-success').style.display = 'block';
-            });
-        });
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+
+    </html>
