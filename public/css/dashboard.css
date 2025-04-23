@@ -178,6 +178,7 @@ header {
     z-index: 90;
     padding-top: 80px;
     border-right: 1px solid rgba(99, 102, 241, 0.2);
+    top: 0;
 }
 
 .sidebar:hover {
