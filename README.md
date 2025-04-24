@@ -47,5 +47,7 @@ Achieva is a comprehensive web application designed to help users track their co
 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/achieva.git
-cd achieva 
 ```
+```bash
+cd achieva
+``` 
