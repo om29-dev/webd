@@ -42,6 +42,8 @@ Achieva is a comprehensive web application designed to help users track their co
 - Node.js (v14 or higher)
 - pnpm package manager
 
+# if you haven't setup prerequisites click here
+
 ### Installation
 
 1. Clone the repository
