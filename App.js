@@ -1,10 +1,14 @@
-const express = require('express')
-const path = require('path')
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const { getServerIP } = require('./utils/network');
+// In App.js
+const { default: open } = require('open'); // Modified import
 
-const app = express()
+const app = express();
 
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -34,9 +38,13 @@ app.get('/progress', (req, res) => {
     res.render('pages/progress');
 });
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
-const PORT = 3000
-app.listen(PORT, () => {
-    console.log(`Server listening on PORT ${PORT}`)
-})
+const PORT = process.env.PORT || 3000;
+const IP   = process.env.HOST || getServerIP();
+const link = `http://${IP}:${PORT}`;
+
+app.listen(PORT, IP, () => {
+    console.log("Server is running on " + link);
+    open(link);
+});

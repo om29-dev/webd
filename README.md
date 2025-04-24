@@ -42,7 +42,7 @@ Achieva is a comprehensive web application designed to help users track their co
 - Node.js (v14 or higher)
 - pnpm package manager
 
-if you haven't setup the above dependency click here
+if you haven't setup the above dependencies click here
 
 ### Installation
 
@@ -53,3 +53,14 @@ git clone https://github.com/yourusername/achieva.git
 ```bash
 cd achieva
 ``` 
+
+2. Install dependencies
+```bash
+pnpm install
+``` 
+
+3. Start the development server
+```bash
+pnpm start
+``` 
+
