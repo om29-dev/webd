@@ -256,9 +256,17 @@ main {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .pulse {
@@ -293,11 +301,11 @@ main {
     .courses-grid {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
-    
+
     header {
         padding: 1rem;
     }
-    
+
     main {
         padding: 1rem;
     }

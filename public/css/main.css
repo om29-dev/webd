@@ -22,7 +22,7 @@ body {
     color: var(--light);
     min-height: 100vh;
     overflow-x: hidden;
-    background-image: 
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
         linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 1));
@@ -360,6 +360,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -370,9 +371,11 @@ body {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.1);
     }
+
     100% {
         transform: scale(1);
     }
@@ -382,15 +385,19 @@ body {
     0% {
         transform: translateY(0) translateX(0);
     }
+
     25% {
         transform: translateY(-20px) translateX(10px);
     }
+
     50% {
         transform: translateY(0) translateX(20px);
     }
+
     75% {
         transform: translateY(20px) translateX(10px);
     }
+
     100% {
         transform: translateY(0) translateX(0);
     }
@@ -400,15 +407,19 @@ body {
     from {
         width: 0;
     }
+
     to {
         width: 100%;
     }
 }
 
 @keyframes blink-caret {
-    from, to {
+
+    from,
+    to {
         border-color: transparent;
     }
+
     50% {
         border-color: var(--accent);
     }
@@ -419,19 +430,19 @@ body {
     .main-heading {
         font-size: 2.5rem;
     }
-    
+
     .tagline {
         font-size: 1.2rem;
     }
-    
+
     .sub-heading {
         font-size: 1rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
+
     .team-members {
         flex-direction: column;
         align-items: center;
