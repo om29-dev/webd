@@ -7,7 +7,7 @@ Achieva is a comprehensive web application designed to help users track their co
 ### Prerequisites
 - Node.js (v14 or higher)
 
-    To download or Setup Node.js [click here](https://nodejs.org/en/download)
+    To Download or Setup Node.js [click here](https://nodejs.org/en/download)
 
 - pnpm package manager
 
