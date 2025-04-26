@@ -31,7 +31,7 @@ Achieva is a comprehensive web application designed to help users track their co
 
 3. Install dependencies
     ```bash
-    pnpm install
+    pnpm i
     ``` 
 
 4. Start the development server
