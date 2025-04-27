@@ -1,0 +1,351 @@
+<%- include('../partials/head') %>
+    <title>Achieva - Project</title>
+    <link rel="stylesheet" href="/css/project.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">Achieva</div>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <span>MOA</span>
+                </div>
+                <div class="user-dropdown">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/login" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="sidebar-text"><a href="/dashboard"
+                            style="text-decoration: none; color: white;">Dashboard</a></div>
+                </li>
+                <li class="sidebar-item active">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="sidebar-text"><a href="/project"
+                            style="text-decoration: none; color: white;">Projects</a>
+                    </div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="sidebar-text">Achievements</div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="sidebar-text">Placements</div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="sidebar-text"><a href="/progress"
+                            style="text-decoration: none; color: white;">Progress</a>
+                    </div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="sidebar-text">Community</div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="sidebar-text"><a href="/resources"
+                            style="text-decoration: none; color: white;">Resources</a></div>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="sidebar-text">Settings</div>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <h1>Industry Project Hub</h1>
+            <p>Browse projects by category to enhance your skills and portfolio</p>
+
+            <div class="categories-container">
+                <!-- Web Development -->
+                <div class="category-card" onclick="openModal('web-development')">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="category-title">Web Development</div>
+                        <div class="category-count">12 Projects</div>
+                    </div>
+                    <div class="category-description">
+                        Build modern web applications using HTML, CSS, JavaScript and popular frameworks like React,
+                        Angular, and Vue.
+                    </div>
+                </div>
+
+                <!-- Mobile Development -->
+                <div class="category-card" onclick="openModal('mobile-development')">
+                    <div class="category-header" style="background-color: #38b2ac;">
+                        <div class="category-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="category-title">Mobile Development</div>
+                        <div class="category-count">8 Projects</div>
+                    </div>
+                    <div class="category-description">
+                        Create cross-platform mobile applications using Flutter, React Native or native iOS/Android
+                        development.
+                    </div>
+                </div>
+
+                <!-- C++ Developer -->
+                <div class="category-card" onclick="openModal('cpp-development')">
+                    <div class="category-header" style="background-color: #667eea;">
+                        <div class="category-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="category-title">C++ Developer</div>
+                        <div class="category-count">6 Projects</div>
+                    </div>
+                    <div class="category-description">
+                        System programming, game development, and high-performance applications using C++.
+                    </div>
+                </div>
+
+                <!-- Backend Development -->
+                <div class="category-card" onclick="openModal('backend-development')">
+                    <div class="category-header" style="background-color: #9f7aea;">
+                        <div class="category-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="category-title">Backend Development</div>
+                        <div class="category-count">10 Projects</div>
+                    </div>
+                    <div class="category-description">
+                        Build robust server-side applications with Node.js, Python, Java, and database management.
+                    </div>
+                </div>
+
+                <!-- AI/ML -->
+                <div class="category-card" onclick="openModal('ai-ml')">
+                    <div class="category-header" style="background-color: #ed64a6;">
+                        <div class="category-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="category-title">AI/ML Projects</div>
+                        <div class="category-count">7 Projects</div>
+                    </div>
+                    <div class="category-description">
+                        Implement machine learning models, neural networks, and AI solutions using Python and
+                        TensorFlow.
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="category-card" onclick="openModal('data-management')">
+                    <div class="category-header" style="background-color: #ecc94b; color: var(--dark);">
+                        <div class="category-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="category-title">Data Management</div>
+                        <div class="category-count" style="background-color: var(--dark); color: white;">5 Projects
+                        </div>
+                    </div>
+                    <div class="category-description">
+                        Work with big data, data pipelines, ETL processes, and database optimization.
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Web Development Modal -->
+        <div class="modal" id="web-development-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Web Development Projects</h2>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="project-section">
+                        <h3 class="section-title"><i class="fas fa-laptop-code"></i>E-commerce Platform</h3>
+                        <p class="project-description">
+                            Build a full-featured e-commerce platform with product listings, shopping cart, user
+                            authentication, and payment integration.
+                        </p>
+
+                        <h4 class="section-title"><i class="fas fa-list-ol"></i>Implementation Steps</h4>
+                        <ol class="steps-list">
+                            <li class="step-item">Design database schema for products, users, and orders</li>
+                            <li class="step-item">Create RESTful API endpoints using Node.js/Express</li>
+                            <li class="step-item">Develop frontend with React and Redux for state management</li>
+                            <li class="step-item">Implement user authentication with JWT</li>
+                            <li class="step-item">Integrate Stripe API for payment processing</li>
+                            <li class="step-item">Add admin dashboard for product management</li>
+                        </ol>
+
+                        <h4 class="section-title"><i class="fas fa-tools"></i>Required Skills</h4>
+                        <div class="skills-container">
+                            <span class="skill-tag">HTML/CSS</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">REST API</span>
+                            <span class="skill-tag">Payment Integration</span>
+                        </div>
+                    </div>
+
+                    <div class="project-section">
+                        <h3 class="section-title"><i class="fas fa-blog"></i>Tech Blog Platform</h3>
+                        <p class="project-description">
+                            Create a blogging platform for tech enthusiasts with markdown support, syntax highlighting,
+                            and
+                            social sharing.
+                        </p>
+
+                        <h4 class="section-title"><i class="fas fa-list-ol"></i>Implementation Steps</h4>
+                        <ol class="steps-list">
+                            <li class="step-item">Set up Next.js project with TypeScript</li>
+                            <li class="step-item">Implement markdown parsing for blog content</li>
+                            <li class="step-item">Add syntax highlighting for code snippets</li>
+                            <li class="step-item">Create user authentication system</li>
+                            <li class="step-item">Develop comment functionality</li>
+                            <li class="step-item">Optimize for SEO and performance</li>
+                        </ol>
+
+                        <h4 class="section-title"><i class="fas fa-tools"></i>Required Skills</h4>
+                        <div class="skills-container">
+                            <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">Markdown</span>
+                            <span class="skill-tag">Tailwind CSS</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">SEO</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="closeModal()">Browse More Projects</button>
+                        <button class="btn btn-primary" onclick="startProject()">Let's Start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Development Modal -->
+        <div class="modal" id="mobile-development-modal">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #38b2ac;">
+                    <h2 class="modal-title">Mobile Development Projects</h2>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="project-section">
+                        <h3 class="section-title"><i class="fas fa-mobile-alt"></i>Fitness Tracker App</h3>
+                        <p class="project-description">
+                            Develop a cross-platform fitness application with workout tracking, progress charts, and
+                            social
+                            features.
+                        </p>
+
+                        <h4 class="section-title"><i class="fas fa-list-ol"></i>Implementation Steps</h4>
+                        <ol class="steps-list">
+                            <li class="step-item">Set up Flutter development environment</li>
+                            <li class="step-item">Design UI with responsive widgets</li>
+                            <li class="step-item">Integrate Firebase for authentication and data storage</li>
+                            <li class="step-item">Implement step counter using device sensors</li>
+                            <li class="step-item">Add workout tracking functionality</li>
+                            <li class="step-item">Create progress visualization with charts</li>
+                        </ol>
+
+                        <h4 class="section-title"><i class="fas fa-tools"></i>Required Skills</h4>
+                        <div class="skills-container">
+                            <span class="skill-tag">Flutter</span>
+                            <span class="skill-tag">Dart</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">UI Design</span>
+                            <span class="skill-tag">REST API</span>
+                            <span class="skill-tag">Mobile Sensors</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="closeModal()">Browse More Projects</button>
+                        <button class="btn btn-primary" onclick="startProject()">Let's Start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Modal functionality
+            function openModal(category) {
+                document.getElementById(`${category}-modal`).style.display = 'block';
+                setTimeout(() => {
+                    document.querySelector(`#${category}-modal .modal-content`).style.transform = 'translateY(0)';
+                    document.querySelector(`#${category}-modal .modal-content`).style.opacity = '1';
+                }, 10);
+            }
+
+            function closeModal() {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+                    modal.querySelector('.modal-content').style.opacity = '0';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                });
+            }
+
+            function startProject() {
+                alert('Project started! Redirecting to project workspace...');
+                // In a real app, this would redirect to the project workspace
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function (event) {
+                if (event.target.classList.contains('modal')) {
+                    closeModal();
+                }
+            }
+
+            // Sidebar active item
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+        </script>
+    </body>
+
+    </html>

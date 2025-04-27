@@ -1,0 +1,226 @@
+<%- include('../partials/head') %>
+    <title>Achieva - Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+    </head>
+
+    <body>
+        <div class="auth-container">
+            <!-- Login Form -->
+            <div class="auth-card" id="login-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
+                    </div>
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">Please enter your credentials to login</p>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email" class="form-label">Email</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="Enter your email" required>
+                        <div class="error-message" id="login-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password"
+                            required>
+                        <i class="fas fa-eye password-toggle" id="login-toggle-password"></i>
+                        <div class="error-message" id="login-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" class="auth-link" id="show-signup">Sign up</a></p>
+                    <p><a href="#" class="auth-link" id="show-forgot">Forgot password?</a></p>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-card hidden" id="signup-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
+                    </div>
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-subtitle">Join us to start your coding journey</p>
+                </div>
+
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label">Full Name</label>
+                        <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name"
+                            required>
+                        <div class="error-message" id="signup-name-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label">Email</label>
+                        <input type="email" id="signup-email" class="form-input" placeholder="Enter your email"
+                            required>
+                        <div class="error-message" id="signup-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label">Password</label>
+                        <input type="password" id="signup-password" class="form-input" placeholder="Create a password"
+                            required>
+                        <i class="fas fa-eye password-toggle" id="signup-toggle-password"></i>
+                        <div class="error-message" id="signup-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-confirm" class="form-label">Confirm Password</label>
+                        <input type="password" id="signup-confirm" class="form-input"
+                            placeholder="Confirm your password" required>
+                        <div class="error-message" id="signup-confirm-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" class="auth-link" id="show-login">Login</a></p>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-card hidden" id="forgot-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="logo-text">CodeTrack</div>
+                    </div>
+                    <h1 class="auth-title">Reset Password</h1>
+                    <p class="auth-subtitle">Enter your email to receive a reset link</p>
+                </div>
+
+                <form id="forgot-form">
+                    <div class="form-group">
+                        <label for="forgot-email" class="form-label">Email</label>
+                        <input type="email" id="forgot-email" class="form-input" placeholder="Enter your email"
+                            required>
+                        <div class="error-message" id="forgot-email-error"></div>
+                        <div class="success-message" id="forgot-success">Password reset link has been sent to your
+                            email!</div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Remember your password? <a href="#" class="auth-link" id="show-login-2">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize the login card
+                const loginCard = document.getElementById('login-card');
+                loginCard.classList.add('active');
+
+                // Password toggle functionality
+                function setupPasswordToggle(toggleId, inputId) {
+                    const toggle = document.getElementById(toggleId);
+                    const input = document.getElementById(inputId);
+
+                    toggle.addEventListener('click', function () {
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            toggle.classList.replace('fa-eye', 'fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            toggle.classList.replace('fa-eye-slash', 'fa-eye');
+                        }
+                    });
+                }
+
+                setupPasswordToggle('login-toggle-password', 'login-password');
+                setupPasswordToggle('signup-toggle-password', 'signup-password');
+
+                // Form switching with animations
+                function switchForms(hideId, showId) {
+                    const hideCard = document.getElementById(hideId);
+                    const showCard = document.getElementById(showId);
+
+                    hideCard.classList.add('slide-out');
+                    setTimeout(() => {
+                        hideCard.classList.add('hidden');
+                        hideCard.classList.remove('slide-out', 'active');
+
+                        showCard.classList.remove('hidden');
+                        showCard.classList.add('slide-in', 'active');
+
+                        setTimeout(() => {
+                            showCard.classList.remove('slide-in');
+                        }, 500);
+                    }, 500);
+                }
+
+                document.getElementById('show-signup').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('login-card', 'signup-card');
+                });
+
+                document.getElementById('show-login').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('signup-card', 'login-card');
+                });
+
+                document.getElementById('show-forgot').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('login-card', 'forgot-card');
+                });
+
+                document.getElementById('show-login-2').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchForms('forgot-card', 'login-card');
+                });
+
+                // Form validation and submission
+                document.getElementById('login-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your login logic here
+                    console.log('Login form submitted');
+                    // Redirect to course list after successful login
+                    window.location.href = 'course list.html';
+                });
+
+                document.getElementById('signup-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your signup logic here
+                    console.log('Signup form submitted');
+                    // After successful signup, switch to login
+                    switchForms('signup-card', 'login-card');
+                });
+
+                document.getElementById('forgot-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Add your forgot password logic here
+                    console.log('Forgot password form submitted');
+                    // Show success message
+                    document.getElementById('forgot-success').style.display = 'block';
+                });
+            });
+        </script>
+    </body>
+
+    </html>
